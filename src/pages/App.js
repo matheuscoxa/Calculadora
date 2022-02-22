@@ -2,164 +2,152 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
 
-export default function App() {
-  const [darkMode] = useState(false);
-  const buttons = [
-    'AC',
-    'DEL',
-    '+',
-    '-',
-    1,
-    2,
-    3,
-    '*',
-    4,
-    5,
-    6,
-    '/',
-    7,
-    8,
-    9,
-    ' ',
-    '.',
-    0,
-    '',
+/*if (',') {
+  replace(',', '.');
+}*/
 
-    '=',
+export default function App() {
+  const teclado = [
+    [{text: 'AC'}, {text: 7}, {text: 4}, {text: 1}, {text: ','}],
+    [{text: 'DEL'}, {text: 8}, {text: 5}, {text: 2}, {text: 0}],
+    [{text: '+'}, {text: 9}, {text: 6}, {text: 3}, {text: ''}],
+    [{text: '-'}, {text: '*'}, {text: '/'}, {text: '='}],
   ];
 
-  const [currentNumber, setCurrentNumber] = useState('');
-  const [lastNumber, setLastNumber] = useState('');
+  const [numeroAtual, setnumeroAtual] = useState('');
+  const [ultimoNumero, setultimoNumero] = useState('');
 
   function calcular() {
-    const splitNumbers = currentNumber.split(' ');
-    const fistNumber = parseFloat(splitNumbers[0]);
-    const operator = splitNumbers[1];
-    const lastNumber = parseFloat(splitNumbers[2]);
+    const usarNumero = numeroAtual.split(' ');
+    const primeiroNumero = parseFloat(usarNumero[0]);
+    const operador = usarNumero[1];
+    const ultimoNumero = parseFloat(usarNumero[2]);
 
-    switch (operator) {
+    switch (operador) {
       case '+':
-        setCurrentNumber((fistNumber + lastNumber).toString());
+        setnumeroAtual((primeiroNumero + ultimoNumero).toString());
         return;
       case '-':
-        setCurrentNumber((fistNumber - lastNumber).toString());
+        setnumeroAtual((primeiroNumero - ultimoNumero).toString());
         return;
       case '*':
-        setCurrentNumber((fistNumber * lastNumber).toString());
+        setnumeroAtual((primeiroNumero * ultimoNumero).toString());
         return;
       case '/':
-        setCurrentNumber((fistNumber / lastNumber).toString());
+        setnumeroAtual((primeiroNumero / ultimoNumero).toString());
         return;
     }
   }
 
-  function handleInput(buttonPressed) {
-    console.log(buttonPressed);
+  function handleInput(botaoUtilizado) {
+    console.log(botaoUtilizado);
     if (
-      buttonPressed === '+' ||
-      buttonPressed === '-' ||
-      buttonPressed === '*' ||
-      buttonPressed === '/'
+      botaoUtilizado === '+' ||
+      botaoUtilizado === '-' ||
+      botaoUtilizado === '*' ||
+      botaoUtilizado === '/'
     ) {
-      setCurrentNumber(currentNumber + ' ' + buttonPressed + ' ');
+      setnumeroAtual(numeroAtual + ' ' + botaoUtilizado + ' ');
       return;
     }
-    switch (buttonPressed) {
+    switch (botaoUtilizado) {
       case 'DEL':
-        setCurrentNumber(currentNumber.substring(0, currentNumber.length - 1));
+        setnumeroAtual(numeroAtual.substring(0, numeroAtual.length - 1));
         return;
       case 'AC':
-        setLastNumber('');
-        setCurrentNumber('');
+        setultimoNumero('');
+        setnumeroAtual('');
         return;
       case '=':
-        setLastNumber(currentNumber + ' = ');
+        setultimoNumero(numeroAtual + ' = ');
         calcular();
-        return;
-      case '+/-':
         return;
     }
 
-    setCurrentNumber(currentNumber + buttonPressed);
+    setnumeroAtual(numeroAtual + botaoUtilizado);
   }
 
   const styles = StyleSheet.create({
-    results: {
-      backgroundColor: darkMode ? '#282f3b' : '#f5f5f5',
+    resultado: {
+      backgroundColor: '#f5f5f5',
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
       minHeight: 300,
       width: '100%',
     },
-    resultText: {
-      color: darkMode ? '#f5f5f5' : '#282F38',
+    resultadoText: {
+      color: '#282F38',
       margin: 10,
       fontSize: 40,
     },
 
-    historyText: {
-      color: darkMode ? '#B5B7BB' : '#7c7c7c',
+    historicoTexto: {
+      color: '#7c7c7c',
       fontSize: 20,
       marginRight: 10,
       alignSelf: 'flex-end',
     },
 
-    buttons: {
+    botoes: {
+      flex: 1,
       flexDirection: 'row',
-      flexWrap: 'wrap',
+      backgroundColor: '#e5e5e5',
     },
-    button: {
-      borderColor: darkMode ? '#3f4d5b' : '#e5e5e5',
-      //borderRadius: 0,
+    botao: {
+      borderColor: '#e5e5e5',
       //borderWidth: 1,
-      alignItems: 'center',
       justifyContent: 'center',
-      minWidth: 80,
-      minHeight: 84,
       flex: 1,
     },
-    igual: {
-      backgroundColor: '#9DBC7B',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'row',
-      minWidth: 80,
-      minHeight: 84,
-      flex: 2,
-    },
-    textButton: {
-      color: darkMode ? '#b5b7bb' : '#7c7c7c',
-      fontSize: 25,
+    botaoTexto: {
+      color: 'black',
+      fontSize: 30,
+      textAlign: 'center',
+      fontFamily: 'OpenSans-ExtraBold',
     },
   });
 
   return (
-    <View>
-      <View style={styles.results}>
+    <View style={{flex: 1}}>
+      <View style={styles.resultado}>
         <TouchableOpacity style={styles.themeButton} />
-        <Text style={styles.historyText}>{lastNumber}</Text>
-        <Text style={styles.resultText}>{currentNumber}</Text>
+        <Text style={styles.historicoTexto}>{ultimoNumero}</Text>
+        <Text style={styles.resultadoText}>{numeroAtual}</Text>
       </View>
-      <View style={styles.buttons}>
-        {buttons.map(button =>
-          button === '=' ? (
-            <TouchableOpacity
-              onPress={() => handleInput(button)}
-              key={button}
-              style={[styles.igual, {flex: 2}, {flexDirection: 'column'}]}>
-              <Text style={[styles.textButton, {color: 'white', fontSize: 40}]}>
-                {button}
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              onPress={() => handleInput(button)}
-              key={button}
-              style={[styles.button, {backgroundColor: '#efefef'}]}>
-              <Text style={styles.textButton}>{button}</Text>
-            </TouchableOpacity>
-          ),
-        )}
+      <View style={styles.botoes}>
+        {teclado.map((linha, index) => {
+          return (
+            <View style={{flex: 1}} key={index}>
+              {linha.map(botao => {
+                if (botao.text === '=') {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => handleInput(botao.text)}
+                      key={botao.text}
+                      style={[
+                        styles.botao,
+                        {backgroundColor: '#9DBC7B'},
+                        {flex: 2.5},
+                        {justifyContent: 'center'},
+                        {borderRadius: 10},
+                      ]}>
+                      <Text style={[styles.botaoTexto]}>{botao.text}</Text>
+                    </TouchableOpacity>
+                  );
+                } else {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => handleInput(botao.text)}
+                      key={botao.text}
+                      style={[styles.botao]}>
+                      <Text style={[styles.botaoTexto]}>{botao.text}</Text>
+                    </TouchableOpacity>
+                  );
+                }
+              })}
+            </View>
+          );
+        })}
       </View>
     </View>
   );
