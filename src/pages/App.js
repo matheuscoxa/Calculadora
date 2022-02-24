@@ -2,13 +2,13 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
 
-/*if (',') {
+/*if (teclado.text === ',') {
   replace(',', '.');
 }*/
 
 export default function App() {
   const teclado = [
-    [{text: 'AC'}, {text: 7}, {text: 4}, {text: 1}, {text: ','}],
+    [{text: 'AC'}, {text: 7}, {text: 4}, {text: 1}, {text: '.'}],
     [{text: 'DEL'}, {text: 8}, {text: 5}, {text: 2}, {text: 0}],
     [{text: '+'}, {text: 9}, {text: 6}, {text: 3}, {text: ''}],
     [{text: '-'}, {text: '*'}, {text: '/'}, {text: '='}],
@@ -103,7 +103,6 @@ export default function App() {
       color: 'black',
       fontSize: 30,
       textAlign: 'center',
-      fontFamily: 'OpenSans-ExtraBold',
     },
   });
 
