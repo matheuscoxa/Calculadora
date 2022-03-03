@@ -2,10 +2,6 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {useState} from 'react';
 
-/*if (teclado.text === ',') {
-  replace(',', '.');
-}*/
-
 export default function App() {
   const teclado = [
     [{text: 'AC'}, {text: 7}, {text: 4}, {text: 1}, {text: '.'}],
@@ -21,22 +17,19 @@ export default function App() {
     const usarNumero = numeroAtual.split(' ');
     const primeiroNumero = parseFloat(usarNumero[0]);
     const operador = usarNumero[1];
-    const ultimoNumero = parseFloat(usarNumero[2]);
+    const ultimoN = parseFloat(usarNumero[2]);
 
-    switch (operador) {
-      case '+':
-        setnumeroAtual((primeiroNumero + ultimoNumero).toString());
-        return;
-      case '-':
-        setnumeroAtual((primeiroNumero - ultimoNumero).toString());
-        return;
-      case '*':
-        setnumeroAtual((primeiroNumero * ultimoNumero).toString());
-        return;
-      case '/':
-        setnumeroAtual((primeiroNumero / ultimoNumero).toString());
-        return;
-    }
+    const operacoes = (op, primeiro, segundo) => {
+      var operadores = {
+        '*': primeiro * segundo,
+        '-': primeiro - segundo,
+        '+': primeiro + segundo,
+        '/': primeiro / segundo,
+      }[op];
+
+      return Math.round(operadores * 100) / 100;
+    };
+    setnumeroAtual(operacoes(operador, primeiroNumero, ultimoN));
   }
 
   function handleInput(botaoUtilizado) {
